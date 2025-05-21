@@ -231,10 +231,10 @@
                 <div class="modal-body text-start">
                     <form action ="cadastro.php" method="post"> 
                         <label class="form-label">NOME</label>
-                        <input class="form-control" type="text" name="nome" required placeholder ="Digite o seu nome..."></input>
+                        <input class="form-control" type="text" name="nome" required placeholder ="Digite o nome"></input>
                         <br/>
                         <label class="form-label">E-MAIL</label>
-                        <input class="form-control" type="email" name="email" required placeholder ="Digite o seu email..."></input>
+                        <input class="form-control" type="email" name="email" required placeholder ="Digite o email"></input>
                         <br/>
                         <label class="form-label">GENERO</label>
                         <select class="form-select" aria-label="Selecione seu genero" name="genero" required>
@@ -245,7 +245,7 @@
                         </select>
                         <br/>
                         <label class="form-label">SENHA</label>
-                        <input class="form-control" type="password" name="senha" required placeholder ="Digite sua senha..."></input>
+                        <input class="form-control" type="password" name="senha" required placeholder ="Digite a senha"></input>
                         <br/>
                         <input type="submit" class="btn btn-success" value="CADASTRAR"/>
                         <button class="Btn" name="BotaoSairModal"data-bs-dismiss="modal">
