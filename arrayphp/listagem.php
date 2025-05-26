@@ -211,7 +211,8 @@ $nomes = $_SESSION['nomes'];
                 </br>
                 <center>
                     <div class="container">
-                        <input type="email" name="buscarEmailouNome" class="input" method="post" placeholder="Buscar por @email ou Nome">
+			<!-- adicionei o id para o javascript encontrar o input que precisa escutar-->
+                        <input type="search" placeholder="Escreva aqui para pesquisar" id="pesquisar">
                         <button class="search__btn">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22">
                             <path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z" fill="#efeff1"></path>
@@ -221,7 +222,9 @@ $nomes = $_SESSION['nomes'];
                 </center>
                 <div class="card-body">
                     <div style="overflow-x:auto;">
-                        <table class="table table-dark table-striped">
+                        <table class="table table-dark table-striped" id="table">
+			<!-- Adicionei a tag tbody -->
+			<tbody id="table">
                             <tr>
                                 <th>ID</th>
                                 <th>NOME</th>
@@ -244,6 +247,7 @@ $nomes = $_SESSION['nomes'];
                                     echo "</tr>";
                                 }
                             ?>
+			</tbody>
                         </table>
                     </div>
                 </div>
@@ -320,6 +324,75 @@ $nomes = $_SESSION['nomes'];
                         document.getElementById('edit-genero').value = genero;
                         document.getElementById('edit-senha').value = senha;
                     });
+                });
+            });
+        </script>
+        
+        <script language="javascript" type="text/javascript" >
+            const url = "editar.php?id=";
+            const email = document.getElementById("email");
+            const nome = document.getElementById("nome");
+            const genero = document.getElementById("floatingSelect");
+            const form = document.getElementById("form_edit");
+            const senha = document.getElementById("senha");
+            const btnExcluir = document.getElementById("btn-excluir");
+            const exemail = document.getElementById("excluir_email");
+            const nomatch = document.getElementById("nomatch");
+            
+            function setBtnExcluir(id, user) {
+                btnExcluir.href = "excluir.php?pos="+id;
+                exemail.innerHTML = user;
+            }
+
+            function atualizarformulario(id, vemail, vnome, vgenero, vsenha) {
+                email.value = vemail;
+                nome.value = vnome;
+                genero.value = vgenero;
+                form.action = url+id;
+                senha.value = vsenha;
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const input_pesquisar = document.getElementById("pesquisar");
+                const table = document.getElementById("table");
+                const trList = table.getElementsByTagName('tr');
+
+                input_pesquisar.addEventListener('keyup', function () {
+                    let txt = input_pesquisar.value;
+                    txt = txt.toUpperCase();
+                    let filtroID = false;
+                    let filtroNome = false;
+                    let filtroEmail = false;
+                    let filtroGenero = false;
+                    let allfalse = true;
+
+                    for (let index1 = 1; index1 < trList.length; index1++) {
+                        let _loc1_ = trList[index1].getElementsByTagName('td');
+                        //let _loc1_ = trList[index];
+                        for (let index2 = 0; index2 < _loc1_.length-1; index2++) { 
+                            if (index2 == 0) {filtroID = _loc1_[index2].textContent.toUpperCase().match(txt)? true:false; }
+                            if (index2 == 1) {filtroNome = txt == _loc1_[index2].textContent.toUpperCase().match(txt)? true:false; }
+                            if (index2 == 2) {filtroEmail = txt == _loc1_[index2].textContent.toUpperCase().match(txt)? true:false; }
+                            if (index2 == 3) {filtroGenero = txt == _loc1_[index2].textContent.toUpperCase().match(txt)? true:false; }
+                        }
+                        if (!filtroID && !filtroNome && !filtroEmail && !filtroGenero) {
+                            trList[index1].style.display = 'none';
+                        } else {
+                            trList[index1].style.display = '';
+                            allfalse = false;
+                        }
+                        
+                    }
+
+                    if (txt == '') {
+                        for (let index1 = 1; index1 < trList.length; index1++) {
+                            trList[index1].style.display = '';
+                        }
+                    }
+                    
+                    nomatch.style.display = allfalse?'':'none';
+                    trList[0].style.display = allfalse?'none':'';
+
                 });
             });
         </script>
